@@ -1,0 +1,27 @@
+version: '3.7'
+
+services:
+
+  demo-web:
+    build: .
+    container_name: demo-web
+    ports:
+      - 8080:8080
+    links:
+      - demo-postgresql
+    environment:
+      - SPRING_DATASOURCE_URL=${DATASOURCE_URL}
+      - SPRING_DATASOURCE_USERNAME=${DATASOURCE_USERNAME}
+      - SPRING_DATASOURCE_PASSWORD=${DATASOURCE_PASSWORD}
+
+  demo-postgresql:
+    image: postgres:10.4
+    container_name: demo-postgresql
+    ports:
+      - 5432:5432
+    volumes:
+      - ~/volumes/demo/postgresql/:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_USER=${DATASOURCE_USERNAME}
+      - POSTGRES_PASSWORD=${DATASOURCE_PASSWORD}
+      - POSTGRES_DB=${DATASOURCE_DATABASE}
